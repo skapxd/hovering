@@ -32,8 +32,6 @@
     Duration can be provided.
 ### 5. HoverButton
     Creates a Button widget with hover effect.
-### 6. Events
-    All widgets have onTap and onHover events.
 
 ## Constructors :
 ```dart
