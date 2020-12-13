@@ -102,17 +102,28 @@ class _HoverContainerState extends State<HoverContainer> {
         setState(() {
           _isHover = true;
           widget.onHover(true);
+
+          if (widget.onHover != null) {
+            widget.onHover(true);
+          }
         });
       },
       cursor: widget.cursor,
       onExit: (event) {
         setState(() {
           _isHover = false;
-          widget.onHover(false);
+
+          if (widget.onHover != null) {
+            widget.onHover(false);
+          }
         });
       },
       child: GestureDetector(
-        onTap: () => widget.onTap,
+        onTap: () {
+          if (widget.onTap != null) {
+            widget.onTap();
+          }
+        },
         child: Container(
           key: widget.key,
           width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
@@ -232,18 +243,26 @@ class _HoverAnimatedContainerState extends State<HoverAnimatedContainer> {
         print(event.timeStamp);
         setState(() {
           _isHover = true;
-          widget.onHover(true);
+          if (widget.onHover != null) {
+            widget.onHover(true);
+          }
         });
       },
       cursor: widget.cursor,
       onExit: (event) {
         setState(() {
           _isHover = false;
-          widget.onHover(false);
+          if (widget.onHover != null) {
+            widget.onHover(false);
+          }
         });
       },
       child: GestureDetector(
-        onTap: () => widget.onTap,
+        onTap: () {
+          if (widget.onTap != null) {
+            widget.onTap();
+          }
+        },
         child: AnimatedContainer(
           key: widget.key,
           width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
@@ -323,18 +342,26 @@ class _HoverCrossFadeWidgetState extends State<HoverCrossFadeWidget> {
           //print(event.timeStamp);
           setState(() {
             _isHover = true;
-            widget.onHover(true);
+            if (widget.onHover != null) {
+              widget.onHover(true);
+            }
           });
         },
         cursor: widget.cursor,
         onExit: (event) {
           setState(() {
             _isHover = false;
-            widget.onHover(false);
+            if (widget.onHover != null) {
+              widget.onHover(false);
+            }
           });
         },
         child: GestureDetector(
-          onTap: () => widget.onTap,
+          onTap: () {
+            if (widget.onTap != null) {
+              widget.onTap();
+            }
+          },
           child: AnimatedCrossFade(
             firstChild: widget.firstChild,
             secondChild: widget.secondChild,
@@ -530,6 +557,255 @@ class _HoverButtonState extends State<HoverButton> {
         height: widget.height,
         padding:
             _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
+      ),
+    );
+  }
+}
+
+class HoverText extends StatefulWidget {
+  final String data;
+  final String hoverData;
+  final double height;
+  final double hoverHeight;
+  final double width;
+  final double hoverWidth;
+  final TextAlign textAlign;
+  final TextStyle textStyle;
+  final MouseCursor mouseCursor;
+  final TextAlign hoverTextAlign;
+  final TextStyle hoverTextStyle;
+  final BoxDecoration decoration;
+  final AlignmentGeometry alignment;
+  final AlignmentGeometry hoverAlignment;
+  final BoxDecoration hoverDecoration;
+  final BoxDecoration foregroundDecoration;
+  final BoxDecoration hoverForegroundDecoration;
+  final BoxConstraints constraints;
+  final BoxConstraints hoverConstraints;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry hoverMargin;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry hoverPadding;
+
+  const HoverText({
+    Key key,
+    this.data,
+    this.hoverData,
+    this.textAlign,
+    this.hoverTextAlign,
+    this.textStyle,
+    this.hoverTextStyle,
+    this.mouseCursor = SystemMouseCursors.basic,
+    this.alignment,
+    this.hoverAlignment,
+    this.decoration,
+    this.hoverDecoration,
+    this.height,
+    this.width,
+    this.hoverHeight,
+    this.hoverWidth,
+    this.foregroundDecoration,
+    this.hoverForegroundDecoration,
+    this.constraints,
+    this.hoverConstraints,
+    this.margin,
+    this.hoverMargin,
+    this.padding,
+    this.hoverPadding,
+  }) : super(key: key);
+  @override
+  _HoverTextState createState() => _HoverTextState();
+}
+
+class _HoverTextState extends State<HoverText> {
+  bool _isHover = false;
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: widget.mouseCursor,
+      onEnter: (event) {
+        setState(() {
+          _isHover = true;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          _isHover = false;
+        });
+      },
+      child: Container(
+        padding: _isHover ? widget.hoverPadding : widget.padding,
+        margin: _isHover ? widget.hoverMargin : widget.margin,
+        constraints: _isHover ? widget.hoverConstraints : widget.constraints,
+        foregroundDecoration: _isHover
+            ? widget.hoverForegroundDecoration
+            : widget.foregroundDecoration,
+        height: _isHover ? widget.hoverHeight : widget.height,
+        width: _isHover ? widget.hoverWidth : widget.width,
+        alignment: _isHover ? widget.hoverAlignment : widget.alignment,
+        decoration: _isHover ? widget.hoverDecoration : widget.decoration,
+        child: Text(
+          _isHover ? widget.hoverData : widget.data,
+          key: widget.key,
+          textAlign: _isHover ? widget.hoverTextAlign : widget.textAlign,
+          style: _isHover ? widget.hoverTextStyle : widget.textStyle,
+        ),
+      ),
+    );
+  }
+}
+
+class HoverAnimatedText extends StatefulWidget {
+  /// Creates a `AnimatedContainer `widget that responds to the hover effect on web.
+  ///
+  /// The `height` and `width` values include the padding.
+  ///
+  /// The `color` and `decoration` arguments cannot both be supplied, since
+  /// it would potentially result in the decoration drawing over the background
+  /// color. To supply a decoration with a color, use `decoration:
+  /// BoxDecoration(color: color)`.
+  final String data;
+  final TextStyle textStyle;
+  final TextStyle hoverTextStyle;
+  final AlignmentGeometry alignment;
+  final AlignmentGeometry hoveraAlignment;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry hoverPadding;
+  final Color color;
+  final Color hoverColor;
+  final Decoration decoration;
+  final Decoration hoverDecoration;
+  final Decoration foregroundDecoration;
+  final Decoration hoverForegroundDecoration;
+  final double width;
+  double hoverWidth;
+  final double height;
+  double hoverHeight;
+  final BoxConstraints constraints;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry hoverMargin;
+  final Matrix4 transform;
+  final Matrix4 hoverTransform;
+  final Widget child;
+  final Duration animatedContainerDuration;
+  final Duration animatedTextDuration;
+  final Curve animatedContainerCurve;
+  final Curve animatedTextCurve;
+  final MouseCursor cursor;
+  final ValueChanged<bool> onHover;
+  final VoidCallback onTap;
+  HoverAnimatedText({
+    Key key,
+    this.alignment,
+    this.hoveraAlignment,
+    this.color,
+    this.animatedContainerDuration = const Duration(milliseconds: 200),
+    this.animatedTextDuration = const Duration(milliseconds: 200),
+    this.hoverColor,
+    this.width,
+    this.hoverWidth,
+    this.height,
+    this.hoverHeight,
+    this.decoration,
+    this.hoverDecoration,
+    this.foregroundDecoration,
+    this.hoverForegroundDecoration,
+    this.child,
+    this.constraints,
+    this.margin,
+    this.hoverMargin,
+    this.padding,
+    this.hoverPadding,
+    this.transform,
+    this.animatedContainerCurve = Curves.linear,
+    this.cursor = SystemMouseCursors.basic,
+    this.hoverTransform,
+    this.onHover,
+    this.onTap,
+    this.data,
+    this.textStyle,
+    this.hoverTextStyle,
+    this.animatedTextCurve = Curves.linear,
+  })  : assert(margin == null || margin.isNonNegative),
+        assert(hoverMargin == null || hoverMargin.isNonNegative),
+        assert(padding == null || padding.isNonNegative),
+        assert(hoverPadding == null || hoverPadding.isNonNegative),
+        assert(decoration == null || decoration.debugAssertIsValid()),
+        assert(hoverDecoration == null || hoverDecoration.debugAssertIsValid()),
+        assert(constraints == null || constraints.debugAssertIsValid()),
+        assert(
+            color == null || decoration == null && hoverDecoration == null,
+            'Cannot provide both a color and a decoration\n'
+            'To provide both, use "decoration: BoxDecoration(color: color)".'),
+        assert(
+            hoverColor == null || decoration == null && hoverDecoration == null,
+            'Cannot provide both a hoverColor and a hoverDecoration\n'
+            'To provide both, use "decoration: BoxDecoration(color: color) and hoverDecoration: BoxDecoration(color: color)".'),
+        super(key: key);
+  @override
+  _HoverAnimatedTextState createState() => _HoverAnimatedTextState();
+}
+
+class _HoverAnimatedTextState extends State<HoverAnimatedText> {
+  bool _isHover = false;
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (event) {
+        print(event.timeStamp);
+        setState(() {
+          _isHover = true;
+          if (widget.onHover != null) {
+            widget.onHover(true);
+          }
+        });
+      },
+      cursor: widget.cursor,
+      onExit: (event) {
+        setState(() {
+          _isHover = false;
+          if (widget.onHover != null) {
+            widget.onHover(false);
+          }
+        });
+      },
+      child: GestureDetector(
+        onTap: () {
+          if (widget.onTap != null) {
+            widget.onTap();
+          }
+        },
+        child: AnimatedContainer(
+          key: widget.key,
+          width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
+          height:
+              _isHover ? widget.hoverHeight ?? widget.height : widget.height,
+          alignment: _isHover
+              ? widget.hoveraAlignment ?? widget.alignment
+              : widget.alignment,
+          padding:
+              _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
+          color: _isHover ? widget.hoverColor ?? widget.color : widget.color,
+          decoration: _isHover
+              ? widget.hoverDecoration ?? widget.decoration
+              : widget.decoration,
+          foregroundDecoration: _isHover
+              ? widget.hoverForegroundDecoration ?? widget.foregroundDecoration
+              : widget.foregroundDecoration,
+          constraints: widget.constraints,
+          duration: widget.animatedContainerDuration,
+          curve: widget.animatedContainerCurve,
+          margin:
+              _isHover ? widget.hoverMargin ?? widget.margin : widget.margin,
+          child: AnimatedDefaultTextStyle(
+            curve: widget.animatedTextCurve,
+            duration: widget.animatedTextDuration,
+            style: _isHover ? widget.hoverTextStyle : widget.textStyle,
+            child: Text(
+              widget.data,
+            ),
+          ),
+        ),
       ),
     );
   }
