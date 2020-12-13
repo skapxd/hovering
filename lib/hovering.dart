@@ -36,31 +36,35 @@ class HoverContainer extends StatefulWidget {
   final Widget child;
   final Clip clipBehavior;
   final MouseCursor cursor;
-  HoverContainer(
-      {Key key,
-      this.alignment,
-      this.hoveraAlignment,
-      this.color,
-      this.hoverColor,
-      this.width,
-      this.hoverWidth,
-      this.height,
-      this.hoverHeight,
-      this.decoration,
-      this.hoverDecoration,
-      this.foregroundDecoration,
-      this.hoverForegroundDecoration,
-      this.child,
-      this.clipBehavior = Clip.none,
-      this.constraints,
-      this.margin,
-      this.hoverMargin,
-      this.padding,
-      this.hoverPadding,
-      this.transform,
-      this.cursor = SystemMouseCursors.basic,
-      this.hoverTransform})
-      : assert(margin == null || margin.isNonNegative),
+  final ValueChanged<bool> onHover;
+  final VoidCallback onTap;
+  HoverContainer({
+    Key key,
+    this.alignment,
+    this.hoveraAlignment,
+    this.color,
+    this.hoverColor,
+    this.width,
+    this.hoverWidth,
+    this.height,
+    this.hoverHeight,
+    this.decoration,
+    this.hoverDecoration,
+    this.foregroundDecoration,
+    this.hoverForegroundDecoration,
+    this.child,
+    this.clipBehavior = Clip.none,
+    this.constraints,
+    this.margin,
+    this.hoverMargin,
+    this.padding,
+    this.hoverPadding,
+    this.transform,
+    this.cursor = SystemMouseCursors.basic,
+    this.hoverTransform,
+    this.onHover,
+    this.onTap,
+  })  : assert(margin == null || margin.isNonNegative),
         assert(hoverMargin == null || hoverMargin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(hoverPadding == null || hoverPadding.isNonNegative),
@@ -97,34 +101,41 @@ class _HoverContainerState extends State<HoverContainer> {
         print(event.timeStamp);
         setState(() {
           _isHover = true;
+          widget.onHover(true);
         });
       },
       cursor: widget.cursor,
       onExit: (event) {
         setState(() {
           _isHover = false;
+          widget.onHover(false);
         });
       },
-      child: Container(
-        key: widget.key,
-        width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
-        height: _isHover ? widget.hoverHeight ?? widget.height : widget.height,
-        alignment: _isHover
-            ? widget.hoveraAlignment ?? widget.alignment
-            : widget.alignment,
-        padding:
-            _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
-        color: _isHover ? widget.hoverColor ?? widget.color : widget.color,
-        decoration: _isHover
-            ? widget.hoverDecoration ?? widget.decoration
-            : widget.decoration,
-        foregroundDecoration: _isHover
-            ? widget.hoverForegroundDecoration ?? widget.foregroundDecoration
-            : widget.foregroundDecoration,
-        clipBehavior: widget.clipBehavior,
-        constraints: widget.constraints,
-        child: widget.child,
-        margin: _isHover ? widget.hoverMargin ?? widget.margin : widget.margin,
+      child: GestureDetector(
+        onTap: () => widget.onTap,
+        child: Container(
+          key: widget.key,
+          width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
+          height:
+              _isHover ? widget.hoverHeight ?? widget.height : widget.height,
+          alignment: _isHover
+              ? widget.hoveraAlignment ?? widget.alignment
+              : widget.alignment,
+          padding:
+              _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
+          color: _isHover ? widget.hoverColor ?? widget.color : widget.color,
+          decoration: _isHover
+              ? widget.hoverDecoration ?? widget.decoration
+              : widget.decoration,
+          foregroundDecoration: _isHover
+              ? widget.hoverForegroundDecoration ?? widget.foregroundDecoration
+              : widget.foregroundDecoration,
+          clipBehavior: widget.clipBehavior,
+          constraints: widget.constraints,
+          child: widget.child,
+          margin:
+              _isHover ? widget.hoverMargin ?? widget.margin : widget.margin,
+        ),
       ),
     );
   }
@@ -163,32 +174,36 @@ class HoverAnimatedContainer extends StatefulWidget {
   final Duration duration;
   final Curve curve;
   final MouseCursor cursor;
-  HoverAnimatedContainer(
-      {Key key,
-      this.alignment,
-      this.hoveraAlignment,
-      this.color,
-      this.duration = const Duration(milliseconds: 200),
-      this.hoverColor,
-      this.width,
-      this.hoverWidth,
-      this.height,
-      this.hoverHeight,
-      this.decoration,
-      this.hoverDecoration,
-      this.foregroundDecoration,
-      this.hoverForegroundDecoration,
-      this.child,
-      this.constraints,
-      this.margin,
-      this.hoverMargin,
-      this.padding,
-      this.hoverPadding,
-      this.transform,
-      this.curve = Curves.linear,
-      this.cursor = SystemMouseCursors.basic,
-      this.hoverTransform})
-      : assert(margin == null || margin.isNonNegative),
+  final ValueChanged<bool> onHover;
+  final VoidCallback onTap;
+  HoverAnimatedContainer({
+    Key key,
+    this.alignment,
+    this.hoveraAlignment,
+    this.color,
+    this.duration = const Duration(milliseconds: 200),
+    this.hoverColor,
+    this.width,
+    this.hoverWidth,
+    this.height,
+    this.hoverHeight,
+    this.decoration,
+    this.hoverDecoration,
+    this.foregroundDecoration,
+    this.hoverForegroundDecoration,
+    this.child,
+    this.constraints,
+    this.margin,
+    this.hoverMargin,
+    this.padding,
+    this.hoverPadding,
+    this.transform,
+    this.curve = Curves.linear,
+    this.cursor = SystemMouseCursors.basic,
+    this.hoverTransform,
+    this.onHover,
+    this.onTap,
+  })  : assert(margin == null || margin.isNonNegative),
         assert(hoverMargin == null || hoverMargin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(hoverPadding == null || hoverPadding.isNonNegative),
@@ -217,35 +232,42 @@ class _HoverAnimatedContainerState extends State<HoverAnimatedContainer> {
         print(event.timeStamp);
         setState(() {
           _isHover = true;
+          widget.onHover(true);
         });
       },
       cursor: widget.cursor,
       onExit: (event) {
         setState(() {
           _isHover = false;
+          widget.onHover(false);
         });
       },
-      child: AnimatedContainer(
-        key: widget.key,
-        width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
-        height: _isHover ? widget.hoverHeight ?? widget.height : widget.height,
-        alignment: _isHover
-            ? widget.hoveraAlignment ?? widget.alignment
-            : widget.alignment,
-        padding:
-            _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
-        color: _isHover ? widget.hoverColor ?? widget.color : widget.color,
-        decoration: _isHover
-            ? widget.hoverDecoration ?? widget.decoration
-            : widget.decoration,
-        foregroundDecoration: _isHover
-            ? widget.hoverForegroundDecoration ?? widget.foregroundDecoration
-            : widget.foregroundDecoration,
-        constraints: widget.constraints,
-        duration: widget.duration,
-        curve: widget.curve,
-        child: widget.child,
-        margin: _isHover ? widget.hoverMargin ?? widget.margin : widget.margin,
+      child: GestureDetector(
+        onTap: () => widget.onTap,
+        child: AnimatedContainer(
+          key: widget.key,
+          width: _isHover ? widget.hoverWidth ?? widget.width : widget.width,
+          height:
+              _isHover ? widget.hoverHeight ?? widget.height : widget.height,
+          alignment: _isHover
+              ? widget.hoveraAlignment ?? widget.alignment
+              : widget.alignment,
+          padding:
+              _isHover ? widget.hoverPadding ?? widget.padding : widget.padding,
+          color: _isHover ? widget.hoverColor ?? widget.color : widget.color,
+          decoration: _isHover
+              ? widget.hoverDecoration ?? widget.decoration
+              : widget.decoration,
+          foregroundDecoration: _isHover
+              ? widget.hoverForegroundDecoration ?? widget.foregroundDecoration
+              : widget.foregroundDecoration,
+          constraints: widget.constraints,
+          duration: widget.duration,
+          curve: widget.curve,
+          child: widget.child,
+          margin:
+              _isHover ? widget.hoverMargin ?? widget.margin : widget.margin,
+        ),
       ),
     );
   }
@@ -268,6 +290,8 @@ class HoverCrossFadeWidget extends StatefulWidget {
   final Curve sizeCurve;
   final Duration reverseDuration;
   final AlignmentGeometry alignmentry;
+  final ValueChanged<bool> onHover;
+  final VoidCallback onTap;
 
   HoverCrossFadeWidget({
     Key key,
@@ -280,6 +304,8 @@ class HoverCrossFadeWidget extends StatefulWidget {
     this.reverseDuration,
     this.secondCurve = Curves.linear,
     this.sizeCurve = Curves.linear,
+    this.onHover,
+    this.onTap,
   })  : assert(firstChild != null && secondChild != null && duration != null,
             'These are required fields.'),
         super(key: key);
@@ -297,25 +323,30 @@ class _HoverCrossFadeWidgetState extends State<HoverCrossFadeWidget> {
           //print(event.timeStamp);
           setState(() {
             _isHover = true;
+            widget.onHover(true);
           });
         },
         cursor: widget.cursor,
         onExit: (event) {
           setState(() {
             _isHover = false;
+            widget.onHover(false);
           });
         },
-        child: AnimatedCrossFade(
-          firstChild: widget.firstChild,
-          secondChild: widget.secondChild,
-          crossFadeState:
-              _isHover ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          duration: widget.duration,
-          reverseDuration: widget.reverseDuration,
-          firstCurve: widget.firstCurve,
-          secondCurve: widget.secondCurve,
-          sizeCurve: widget.sizeCurve,
-          alignment: widget.alignmentry,
+        child: GestureDetector(
+          onTap: () => widget.onTap,
+          child: AnimatedCrossFade(
+            firstChild: widget.firstChild,
+            secondChild: widget.secondChild,
+            crossFadeState:
+                _isHover ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: widget.duration,
+            reverseDuration: widget.reverseDuration,
+            firstCurve: widget.firstCurve,
+            secondCurve: widget.secondCurve,
+            sizeCurve: widget.sizeCurve,
+            alignment: widget.alignmentry,
+          ),
         ));
   }
 }
