@@ -13,7 +13,7 @@
 ## Intallation :
 ```dart 
     dependencies:
-        hovering: ^1.0.2
+        hovering: ^1.1.0
 ```
 
 ## List of Widgets :
