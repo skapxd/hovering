@@ -37,11 +37,11 @@
 
 ## Constructors :
 ```dart
-HoverWidget(
-      {Key key,
-      @required this.child,
-      @required this.hoverChild,
-      @required this.onHover,
+HoverWidget({
+    Key key,
+    @required this.child,
+    @required this.hoverChild,
+    @required this.onHover,
 });
 ```
 ```dart

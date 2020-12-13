@@ -1,3 +1,6 @@
+## [1.1.2] 
+*Add onTap and onHover events
+
 ## [1.0.2] 
 
 *Updated Readme
